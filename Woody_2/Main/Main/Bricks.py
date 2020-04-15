@@ -40,7 +40,7 @@ class Brick():
         self.number_of_bricks = 21
         
     def __repr__(self):
-        return "The Shape is:"  
+        return "Shape"  
         
     
 class Three_X_Three(Brick):

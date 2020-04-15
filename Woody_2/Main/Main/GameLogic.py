@@ -15,15 +15,39 @@ class Game(tkinter.Frame):
         self.canvas = tkinter.Canvas(self, width=self.width, height=self.height, bg='#AA6C39')
         
         self.showGrid()
+        
         #testscore
         self.showScore(200)
-        self.showBricks()
-        motion = Move.Motion()
-        motion.moveBricks(master)
-        motion.getMousePos()
+        
+        #Bricks
+        self.myBricks = self.showBricks()  
+        
+        #trigger motion event      
+        self.mouse_x = 0
+        self.mouse_y = 0
+        master.bind("<Button-1>", self.mouseClick)
         
         self.canvas.pack()
         self.pack()
+        
+    def mouseClick(self, event):
+        self.mouse_x = event.x
+        self.mouse_y = event.y
+        #print ("Mouse x = ", motion.mouse_x, ", Mouse y = ", motion.mouse_y)
+        
+        if (self.mouse_y >= 600 and self.mouse_y <= 800):
+            if(self.mouse_x <= 200):
+                #print("Chose shape 1")
+                self.putBrick(self.myBricks[0])
+            if(self.mouse_x >= 201 and self.mouse_x <= 400):
+                #print("Chose shape 2")                
+                self.putBrick(self.myBricks[1])
+            if(self.mouse_x >= 401):
+                #print("Chose shape 3")
+                self.putBrick(self.myBricks[2])
+                
+    def putBrick(self, brick):
+        print("User will put ", brick, " into game location")
         
     def showGrid(self):
         #Position variables
@@ -115,8 +139,10 @@ class Game(tkinter.Frame):
                     y_down = i*square_size + 640 + square_size
                     self.canvas.create_rectangle(x_left, y_up, x_right, y_down)
                     #print("Up Left: (" + str(x_left) + ", " + str(y_up) + ")") 
-        
-        
-        
+                    
+        shownBricks = [my_brick, my_brick_2, my_brick_3]
+        return shownBricks
+
+
         
         

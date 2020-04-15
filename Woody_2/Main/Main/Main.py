@@ -5,11 +5,11 @@ Created on 14.04.2020
 '''
 
 import tkinter
-import OpenWindow as ow
+import GameLogic as gl
 
 top = tkinter.Tk()
 top.title("Woody")
 top.resizable(True, True)
-game = ow.Game(top)
+game = gl.Game(top)
 top.mainloop()
 
