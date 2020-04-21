@@ -5,7 +5,7 @@ Created on 14.04.2020
 '''
 import tkinter
 import Bricks
-import Move
+import time
 
 class Game(tkinter.Frame):
     def __init__(self, master):
@@ -13,22 +13,34 @@ class Game(tkinter.Frame):
         self.width = 600
         self.height = 850
         self.canvas = tkinter.Canvas(self, width=self.width, height=self.height, bg='#AA6C39')
-        
-        self.showGrid()
-        
-        #testscore
-        self.showScore(200)
-        
-        #Bricks
-        self.myBricks = self.showBricks()  
+        self.score = 0
+        self.gameOver = False  
+        self.brickToPut = [[]]
         
         #trigger motion event      
         self.mouse_x = 0
         self.mouse_y = 0
-        master.bind("<Button-1>", self.mouseClick)
-        
+        master.bind("<Button-1>", self.mouseClick)   
+        master.bind("<Button-3>", self.placeBrick)
+
+        self.updateScreen()
+            
+        #show on screen
         self.canvas.pack()
         self.pack()
+
+    def quitGame(self, event):
+        self.gameOver = True
+        
+    def updateScreen(self):
+        self.showGrid()       
+               
+        #testscore
+        self.showScore(self.score)
+        
+        #Bricks
+        self.myBricks = self.showBricks()
+        self.score += 1           
         
     def mouseClick(self, event):
         self.mouse_x = event.x
@@ -46,8 +58,46 @@ class Game(tkinter.Frame):
                 #print("Chose shape 3")
                 self.putBrick(self.myBricks[2])
                 
+    def placeBrick(self, event):
+        #mouse position
+        mouseX = event.x
+        mouseY = event.y
+        
+        #outline of grid
+        xLeft = 50
+        xRight = self.width -50
+        yUp = 50
+        yDown = self.height - 300
+        
+        #convert into grid position
+        cellX = -1
+        cellY = -1
+        if mouseX >= xLeft and mouseX <= xRight:
+            if mouseY >= yUp and mouseY <= yDown:
+                print("Right click at pos (", mouseX, ", ", mouseY, ")")
+                cellX, cellY = self.calculateGridCell(mouseX, mouseY)
+           
+        #paint the grid        
+        if (cellX > -1) and (cellY > -1):
+            brick = self.brickToPut
+            for i in range(len(brick[0])):
+                for j in range(len(brick)):
+                    if(brick[i][j] == True):
+                        pass
+                    'DOOOOOO SOMETHINGGGGGGGGGGGGGGGGGGGGG'
+                        
+            
+                
+                
     def putBrick(self, brick):
         print("User will put ", brick, " into game location")
+        self.brickToPut = brick
+        
+    def calculateGridCell(self, x, y):
+        cellX = (int) ((x-50) / 50)
+        cellY = (int) ((y-50) / 50)
+        print("You clicked at cell ", cellX, ", ", cellY, " in your grid")
+        return cellX, cellY
         
     def showGrid(self):
         #Position variables
